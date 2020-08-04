@@ -1,40 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import socketIOClient from "socket.io-client";
 
-const URL = 'ws://localhost:3030'
+const URL = 'ws://localhost:5000'
 function App() {
-  const [ws, setWs] = React.useState(new WebSocket(URL));
   const [message, setMessage] = React.useState(null);
 
   React.useEffect(() => {
-    ws.onopen = () => {
-      console.log('connected');
-    }
-
-    ws.onmessage = (event) => {
-      console.log(event.data)
-      // const msg = JSON.parse(event.data);
-      // console.log(msg)
-      // setMessage(msg);
-    }
-
-    ws.onclose = () => {
-      console.log('disconnected');
-      setWs(new WebSocket(URL));
-    }
+    const socket = socketIOClient(URL);
+    socket.on('message', data => {
+      console.log(data)
+      setMessage(data);
+    })
   }, [])
 
 
   return (
     <div className="App">
-      {/* { message && message.length ? message.map(info => {
+      { (message !== null && message.length > 0) ? message.map((info, index) => {
         return (
-          <div>
+          <div key={index}>
             {JSON.stringify(info)}
           </div>
         )
-      }) : "Retrieveing message..."} */}
+      }) : "Retrieving message..."}
     </div>
   );
 }
