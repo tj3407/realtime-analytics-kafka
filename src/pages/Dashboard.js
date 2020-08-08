@@ -7,6 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import { connect } from "react-redux";
 
 // const URL = 'ws://localhost:5000'
 
@@ -101,4 +102,16 @@ function Dashboard(props) {
   );
 }
 
-export default Dashboard;
+function mapStateToProps(state) {
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
