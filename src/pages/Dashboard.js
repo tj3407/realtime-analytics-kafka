@@ -9,8 +9,23 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { connect } from "react-redux";
 import LineChart from "../components/charts/LineChart";
+import DonutChart from "../components/charts/DonutChart";
 
 // const URL = 'ws://localhost:5000'
+
+const testData = [
+    { x: 0, y: 20 },
+    { x: 150, y: 150 },
+    { x: 300, y: 100 },
+    { x: 450, y: 20 },
+    { x: 600, y: 130 }
+  ];
+
+  const testDonutData = [
+    { "Hi": 20 },
+    { "Hello There": 46 },
+    { "Click Me": 76 }
+  ];
 
 const drawerWidth = 240;
 
@@ -60,7 +75,8 @@ function Dashboard(props) {
       />
       <main className={classes.content}>
         <Toolbar />
-        <LineChart />
+        <LineChart data={testData} />
+        <DonutChart data={testDonutData} />
         <Typography paragraph>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
           ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar

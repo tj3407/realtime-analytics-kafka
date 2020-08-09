@@ -1,123 +1,114 @@
 import React from "react";
+import Paper from "@material-ui/core/Paper";
 import * as d3 from "d3";
+import Chart from 'chart.js';
 
-const testData = [
-  { x: 0, y: 20 },
-  { x: 150, y: 150 },
-  { x: 300, y: 100 },
-  { x: 450, y: 20 },
-  { x: 600, y: 130 },
-];
 const margin = { top: 10, right: 30, bottom: 30, left: 60 };
-const defaultWidth = 660 - margin.left - margin.right;
-const defaultHeight = 500 - margin.top - margin.bottom;
+const defaultWidth = 600;
+const defaultHeight = 300;
 
-function drawLineChart(
-  data = testData,
-  width = defaultWidth,
-  height = defaultHeight
-) {
-  var svg = d3
-    .select("#line-chart")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+const LineChart = ({ data }) => {
+  const ref = React.useRef();
 
-  // Add X axis --> it is a date format
-  var x = d3.scaleLinear().domain([1, 650]).range([0, width]);
-  svg
-    .append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
-
-  // Add Y axis
-  var y = d3.scaleLinear().domain([0, 160]).range([height, 0]);
-  svg.append("g").call(d3.axisLeft(y));
-
-  // This allows to find the closest X index of the mouse:
-  var bisect = d3.bisector(function (d) {
-    return d.x;
-  }).left;
-
-  // Create the circle that travels along the curve of chart
-  var focus = svg
-    .append("g")
-    .append("circle")
-    .style("fill", "none")
-    .attr("stroke", "black")
-    .attr("r", 8.5)
-    .style("opacity", 0);
-
-  // Create the text that travels along the curve of chart
-  var focusText = svg
-    .append("g")
-    .append("text")
-    .style("opacity", 0)
-    .attr("text-anchor", "left")
-    .attr("alignment-baseline", "middle");
-
-  // Add the line
-  svg
-    .append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 1.5)
-    .attr(
-      "d",
-      d3
-        .line()
-        .x(function (d) {
-          return x(d.x);
-        })
-        .y(function (d) {
-          return y(d.y);
-        })
-    );
-
-  // Create a rect on top of the svg area: this rectangle recovers mouse position
-  svg
-    .append("rect")
-    .style("fill", "none")
-    .style("pointer-events", "all")
-    .attr("width", width)
-    .attr("height", height)
-    .on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseout", mouseout);
-
-  // What happens when the mouse move -> show the annotations at the right positions.
-  function mouseover() {
-    focus.style("opacity", 1);
-    focusText.style("opacity", 1);
-  }
-
-  function mousemove() {
-    // recover coordinate we need
-    const x0 = x.invert(d3.mouse(this)[0]);
-    const i = bisect(data, x0, 1);
-    console.log(data[i])
-    const selectedData = data[i];
-    focus.attr("cx", x(selectedData.x)).attr("cy", y(selectedData.y));
-    focusText
-      .html("x:" + selectedData.x + "  -  " + "y:" + selectedData.y)
-      .attr("x", x(selectedData.x) + 15)
-      .attr("y", y(selectedData.y));
-  }
-  function mouseout() {
-    focus.style("opacity", 0);
-    focusText.style("opacity", 0);
-  }
-}
-
-const LineChart = (props) => {
   React.useEffect(() => {
-    drawLineChart();
+    // const svg = d3
+    //   .select(ref.current)
+    //   .attr("width", defaultWidth + margin.left + margin.right)
+    //   .attr("height", defaultHeight + margin.top + margin.bottom)
+    drawChartjs();
   }, []);
 
-  return <div id="line-chart"></div>;
+  React.useEffect(() => {
+    // drawLineChart();
+  }, [data]);
+
+  function drawChartjs() {
+      const ctx = document.getElementById("myChart");
+      new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: ["January", "February", "March", "April", "May"],
+              datasets: [{
+                  label: "Line Chart",
+                  fill: false,
+                  backgroundColor: "rgba(75,192,192,0.4)",
+                  borderColor: "rgba(75,192,192,1)",
+                  pointBorderColor: "rgba(75,192,192,1)",
+                  pointBackgroundColor: "#fff",
+                  pointRadius: 5,
+                  pointHitRadius: 10,
+                  data: data
+              }]
+          },
+          options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                }]
+            },
+            showLines: true
+        }
+      })
+  }
+
+  function drawLineChart(width = defaultWidth, height = defaultHeight) {
+    var svg = d3
+      .select(ref.current)
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Add X axis --> it is a date format
+    var x = d3.scaleLinear().domain([1, 750]).range([0, width + margin.left + margin.right]);
+    svg
+      .append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add Y axis
+    var y = d3.scaleLinear().domain([0, 160]).range([height, 0]);
+    svg.append("g").call(d3.axisLeft(y));
+
+    // Add the line
+    svg
+      .append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr(
+        "d",
+        d3
+          .line()
+          .x(function (d) {
+            return x(d.x);
+          })
+          .y(function (d) {
+            return y(d.y);
+          })
+          .curve(d3.curveCatmullRom.alpha(0.5))
+      );
+
+    // Create a rect on top of the svg area: this rectangle recovers mouse position
+    svg
+      .append("rect")
+      .style("fill", "none")
+      .style("pointer-events", "all")
+      .attr("width", width)
+      .attr("height", height)
+
+  }
+
+  return (
+    <Paper id="line-chart" elevation={0} style={{ margin: 20, padding: 10 }} >
+      <canvas id="myChart" width="660" height="300" />
+      {/* <svg ref={ref}></svg> */}
+    </Paper>
+  );
 };
 
 export default LineChart;
