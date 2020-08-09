@@ -8,6 +8,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import { connect } from "react-redux";
 
 function Sidebar({ cssForDrawer, cssForDrawerContainer, cssForDrawerPaper }) {
   return (
@@ -46,4 +47,16 @@ function Sidebar({ cssForDrawer, cssForDrawerContainer, cssForDrawerPaper }) {
   );
 }
 
-export default Sidebar;
+function mapStateToProps(state) {
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
