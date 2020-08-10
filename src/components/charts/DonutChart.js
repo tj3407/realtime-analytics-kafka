@@ -24,7 +24,7 @@ const DonutChart = ({ data }) => {
   }
 
   function drawChartjs() {
-      const ctx = document.getElementById("myDonutChart");
+      const ctx = document.getElementById("donut-chart");
       new Chart(ctx, {
           type: 'doughnut',
           data: {
@@ -38,8 +38,8 @@ const DonutChart = ({ data }) => {
   }
 
   return (
-    <Paper id="line-chart" elevation={0} style={{ margin: 20, padding: 10 }} >
-      <canvas id="myDonutChart" width="660" height="300" />
+    <Paper id="line-chart" elevation={0} style={{ margin: 20, padding: 40 }} >
+      <canvas id="donut-chart" width="660" height="300" />
     </Paper>
   );
 };

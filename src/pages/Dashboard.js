@@ -10,6 +10,7 @@ import Sidebar from "../components/Sidebar";
 import { connect } from "react-redux";
 import LineChart from "../components/charts/LineChart";
 import DonutChart from "../components/charts/DonutChart";
+import BarChart from "../components/charts/BarChart";
 
 // const URL = 'ws://localhost:5000'
 
@@ -77,6 +78,7 @@ function Dashboard(props) {
         <Toolbar />
         <LineChart data={testData} />
         <DonutChart data={testDonutData} />
+        <BarChart data={testDonutData} />
         <Typography paragraph>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
           ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar

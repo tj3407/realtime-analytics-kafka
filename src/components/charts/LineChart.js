@@ -104,7 +104,7 @@ const LineChart = ({ data }) => {
   }
 
   return (
-    <Paper id="line-chart" elevation={0} style={{ margin: 20, padding: 10 }} >
+    <Paper id="line-chart" elevation={0} style={{ margin: 20, padding: 40 }} >
       <canvas id="myChart" width="660" height="300" />
       {/* <svg ref={ref}></svg> */}
     </Paper>
