@@ -6,10 +6,10 @@ import Typography from "@material-ui/core/Typography";
 function Header(props) {
   return (
     <div>
-      <AppBar position="fixed" className={props.cssFor}>
+      <AppBar position="fixed" className={props.cssFor} elevation={0}>
         <Toolbar>
           <Typography variant="h6" noWrap>
-            Clipped drawer
+            Realtime Dashboard
           </Typography>
         </Toolbar>
       </AppBar>

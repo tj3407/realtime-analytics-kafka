@@ -1,6 +1,7 @@
 import React from "react";
 import Paper from "@material-ui/core/Paper";
 import Chart from "chart.js";
+import moment from "moment";
 
 const BarChart = ({ data }) => {
   const colors = [];
@@ -18,8 +19,12 @@ const BarChart = ({ data }) => {
     return "rgb(" + r + "," + g + "," + b + ")";
   };
 
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < 40; i++) {
     colors.push(dynamicColors());
+  }
+
+  function newDate(days) {
+    return moment().add(days, 'm');
   }
 
   function drawChartjs() {
@@ -27,11 +32,16 @@ const BarChart = ({ data }) => {
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: data.map((info) => Object.keys(info)[0]),
+        // labels: data.map((info) => Object.keys(info)[0]),
+        // labels: [newDate(-60), newDate(-120), newDate(40)],
+        labels: Array.from({length: 40}, () => Math.floor(newDate(Math.random() * 40))),
         datasets: [
           {
-            data: data.map((info) => Object.values(info)[0]),
-            backgroundColor: colors,
+            // label: "Number of clicks",
+            // label: data.map((info) => Object.keys(info)[0]),
+            // data: data.map((info) => Object.values(info)[0]),
+            data: Array.from({length: 40}, () => Math.floor(Math.random() * 40)),
+            backgroundColor: 'green',
           },
         ],
       },
@@ -44,6 +54,24 @@ const BarChart = ({ data }) => {
               },
             },
           ],
+          xAxes: [{
+            type: 'time',
+            // distribution: 'linear',
+            time: {
+              displayFormats: {
+                //  'millisecond': 'MMM DD',
+                //  'second': 'MMM DD',
+                 'minute': 'h:mm a',
+                //  'hour': 'MMM DD',
+                //  'day': 'MMM DD',
+                //  'week': 'MMM DD',
+                //  'month': 'MMM DD',
+                //  'quarter': 'MMM DD',
+                //  'year': 'MMM DD',
+              },
+              // unit: 'minute'
+            }
+          }]
         },
       },
     });
